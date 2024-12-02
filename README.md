@@ -35,6 +35,7 @@ import (
 )
 
 func main() {
+	// global singleton
 	log.Debug("debug")
 	log.Info("info")
 	log.Warn("warn")
@@ -44,6 +45,8 @@ func main() {
 	log.Error("error")
 	log.Info("info")
 	log.Warn("warn")
+	
+	// obj
 	l := log.New()
 	l.Debug("debug")
 	l.Info("info")
