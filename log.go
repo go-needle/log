@@ -54,6 +54,7 @@ func Set(level int, out io.Writer) {
 	} else {
 		defaultOutput = out
 	}
+
 	for k, logger := range loggers {
 		logger.SetOutput(out)
 		if out == os.Stdout {
