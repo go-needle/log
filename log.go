@@ -8,16 +8,28 @@ import (
 	"sync"
 )
 
+// log prefix on console
+var prefixes = map[string]string{"DEBUG": "\033[31m[DEBUG]\033[0m ", "INFO": "\033[34m[INFO]\033[0m ", "WARN": "\033[33m[WARN]\033[0m ", "ERROR": "\033[31m[ERROR]\033[0m ", "FATAL": "\033[31m[FATAL]\033[0m "}
+
+// log output levels
+const (
+	DebugLevel = iota
+	InfoLevel
+	WarnLevel
+	ErrorLevel
+	FatalLevel
+	Disabled
+)
+
 var (
-	defaultOutput = io.Writer(os.Stdout)
-	prefixes      = map[string]string{"DEBUG": "\033[31m[DEBUG]\033[0m ", "INFO": "\033[34m[INFO]\033[0m ", "WARN": "\033[33m[WARN]\033[0m ", "ERROR": "\033[31m[ERROR]\033[0m ", "FATAL": "\033[31m[FATAL]\033[0m "}
-	debugLog      = log.New(defaultOutput, prefixes["DEBUG"], log.LstdFlags|log.Lshortfile)
-	infoLog       = log.New(defaultOutput, prefixes["INFO"], log.LstdFlags|log.Lshortfile)
-	warnLog       = log.New(defaultOutput, prefixes["WARN"], log.LstdFlags|log.Lshortfile)
-	errorLog      = log.New(defaultOutput, prefixes["ERROR"], log.LstdFlags|log.Lshortfile)
-	fatalLog      = log.New(defaultOutput, prefixes["FATAL"], log.LstdFlags|log.Lshortfile)
-	loggers       = map[string]*log.Logger{"DEBUG": debugLog, "INFO": infoLog, "WARN": warnLog, "ERROR": errorLog, "FATAL": fatalLog}
-	mu            sync.Mutex
+	output   = io.Writer(os.Stdout)
+	debugLog = log.New(output, prefixes["DEBUG"], log.LstdFlags|log.Lshortfile)
+	infoLog  = log.New(output, prefixes["INFO"], log.LstdFlags|log.Lshortfile)
+	warnLog  = log.New(output, prefixes["WARN"], log.LstdFlags|log.Lshortfile)
+	errorLog = log.New(output, prefixes["ERROR"], log.LstdFlags|log.Lshortfile)
+	fatalLog = log.New(output, prefixes["FATAL"], log.LstdFlags|log.Lshortfile)
+	loggers  = map[string]*log.Logger{"DEBUG": debugLog, "INFO": infoLog, "WARN": warnLog, "ERROR": errorLog, "FATAL": fatalLog}
+	mu       sync.Mutex
 )
 
 // log methods
@@ -34,25 +46,15 @@ var (
 	Fatalf = fatalLog.Fatalf
 )
 
-// log output levels
-const (
-	DebugLevel = iota
-	InfoLevel
-	WarnLevel
-	ErrorLevel
-	FatalLevel
-	Disabled
-)
-
 // Set controls log level and output
 func Set(level int, out io.Writer) {
 	mu.Lock()
 	defer mu.Unlock()
 
 	if out == nil {
-		out = defaultOutput
+		out = output
 	} else {
-		defaultOutput = out
+		output = out
 	}
 
 	for k, logger := range loggers {
@@ -79,4 +81,13 @@ func Set(level int, out io.Writer) {
 	if FatalLevel < level {
 		fatalLog.SetOutput(io.Discard)
 	}
+}
+
+func File(path string) *os.File {
+	file, err := os.OpenFile(path, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		fmt.Printf("open file error, err = %v\n", err)
+		return nil
+	}
+	return file
 }

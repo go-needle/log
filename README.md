@@ -39,17 +39,11 @@ func main() {
 	log.Info("info")
 	log.Warn("warn")
 	log.Error("error")
-	file, err := os.OpenFile("log.txt", os.O_APPEND|os.O_CREATE, 0666)
-	if err != nil {
-		fmt.Printf("open file error, err = %v\n", err)
-		return
-	}
-	log.Set(log.ErrorLevel, file)
+	log.Set(log.ErrorLevel, log.File("log.txt"))
 	log.Debug("debug")
 	log.Error("error")
 	log.Fatal("fatal")
 	log.Info("info")
 	log.Warn("warn")
 }
-
 ```
