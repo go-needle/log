@@ -83,6 +83,7 @@ func Set(level int, out io.Writer) {
 	}
 }
 
+// File returns Default configuration for outputting logs to files
 func File(path string) *os.File {
 	file, err := os.OpenFile(path, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
