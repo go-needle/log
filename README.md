@@ -5,7 +5,7 @@
 
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable-next-line MD036 -->
-A lightweight Golang logging framework
+A lightweight logging framework for Golang
 <!-- prettier-ignore-end -->
 
 <img src="https://img.shields.io/badge/golang-1.11+-blue" alt="golang">
