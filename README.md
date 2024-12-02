@@ -35,12 +35,14 @@ import (
 )
 
 func main() {
+	file := log.File("log.txt")
+	defer file.Close()
 	// global singleton
 	log.Debug("debug")
 	log.Info("info")
 	log.Warn("warn")
 	log.Error("error")
-	log.Set(log.ErrorLevel, log.File("log.txt"))
+	log.Set(log.ErrorLevel, file)
 	log.Debug("debug")
 	log.Error("error")
 	log.Info("info")
@@ -52,7 +54,7 @@ func main() {
 	l.Info("info")
 	l.Warn("warn")
 	l.Error("error")
-	l.Set(log.ErrorLevel, log.File("log.txt"))
+	l.Set(log.ErrorLevel, file)
 	l.Debug("debug")
 	l.Info("info")
 	l.Warn("warn")
