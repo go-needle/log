@@ -9,7 +9,7 @@ import (
 )
 
 // log prefix on console
-var prefixes = map[string]string{"DEBUG": "\033[31m[DEBUG]\033[0m ", "INFO": "\033[34m[INFO]\033[0m ", "WARN": "\033[33m[WARN]\033[0m ", "ERROR": "\033[31m[ERROR]\033[0m ", "FATAL": "\033[31m[FATAL]\033[0m "}
+var prefixes = map[string]string{"DEBUG": "\033[32m[DEBUG]\033[0m ", "INFO": "\033[34m[INFO]\033[0m ", "WARN": "\033[33m[WARN]\033[0m ", "ERROR": "\033[31m[ERROR]\033[0m ", "FATAL": "\033[31m[FATAL]\033[0m "}
 
 // log output levels
 const (
